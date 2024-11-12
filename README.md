@@ -1,6 +1,6 @@
 # JavaScript DOM Manipulation
 
-<details>
+<details open>
 <summary>Table of Contents</summary>
 
 - [DOM](#dom)
@@ -38,6 +38,7 @@
   - [InnerHTML](#innerhtml)
   - [innerText](#innertext)
   - [textContent](#textcontent)
+  - [A summary of the differances between innerText, innerHTML and textContent](#a-summary-of-the-differances-between-innertext-innerhtml-and-textcontent)
   - [getAttribute](#getattribute--name---string--null)
   - [setAttribute](#setattribute--name-value---void)
   - [removeAttribute](#removeattribute--name---void)
@@ -432,6 +433,64 @@ Basically this attribute works in the same was as innerText but there are some d
 3. Does not consider the current style of the element.
 
 Most of the times these are used interchangeably but the usage should be based on the specific requirements. If you need to consider the styling, use `innerText`, otherwise you can use `textContent`.
+
+[Back to Top](#javascript-dom-manipulation)
+
+### A summary of the differances between innerText, innerHTML and textContent
+
+Certainly! Here is a concise summary of the key differences between `innerText`, `innerHTML`, and `textContent` in JavaScript for DOM manipulation:
+
+#### 1. `innerHTML`
+
+- **Purpose**: Retrieves or sets the HTML markup contained within an element.
+- **Behavior**: Parses HTML, meaning it can render HTML elements and execute any scripts included in the inserted HTML.
+- **Usage**: Modifying `innerHTML` allows you to create or manipulate an element's entire content, including any nested tags.
+- **Example**:
+  ```javascript
+  const element = document.getElementById("example");
+  element.innerHTML = "<strong>Hello World!</strong>"; // Renders 'Hello World!' in bold
+  ```
+- **Consideration**: Potentially exposes your code to security risks (like XSS attacks) if using untrusted data.
+
+#### 2. `textContent`
+
+- **Purpose**: Retrieves or sets the text content of an element and its descendants.
+- **Behavior**: Returns all text within an element but ignores HTML tags. Setting `textContent` will replace the entire content with plain text, not interpreted as HTML.
+- **Usage**: Useful when you want to work with plain text without interpreting HTML elements.
+- **Example**:
+  ```javascript
+  const element = document.getElementById("example");
+  element.textContent = "<strong>Hello World!</strong>"; // Displays the string literally, including the tags
+  ```
+- **Performance**: Generally faster than `innerHTML` since it doesn't parse HTML.
+
+#### 3. `innerText`
+
+- **Purpose**: Retrieves or sets the visible text content of an element, subject to CSS styles like `display: none`.
+- **Behavior**: Differs from `textContent` by taking the rendered appearance into account, meaning it will exclude hidden text (e.g., text inside elements with `display: none` or `visibility: hidden`).
+- **Usage**: Suitable when you want to capture or modify what a user sees on the page, considering styling and rendering.
+- **Example**:
+  ```javascript
+  const element = document.getElementById("example");
+  element.innerText = "Hello World!"; // Updates the visible text content, reflecting CSS styles
+  ```
+- **Performance**: Slightly slower than `textContent` due to its consideration of layout and styles.
+
+### Summary Table:
+
+| Property      | Reads HTML Tags | Modifies HTML Tags | Affects Visibility | Parses & Renders HTML |
+| ------------- | --------------- | ------------------ | ------------------ | --------------------- |
+| `innerHTML`   | Yes             | Yes                | No                 | Yes                   |
+| `textContent` | No              | No                 | No                 | No                    |
+| `innerText`   | No              | No                 | Yes                | No                    |
+
+### Use Cases:
+
+- **`innerHTML`**: Use when you need to insert or replace HTML content.
+- **`textContent`**: Use when you only need plain text manipulation, ignoring HTML structure and styles.
+- **`innerText`**: Use when you want to manipulate the visible text, respecting the rendering flow of the page.
+
+This understanding helps you choose the right property for different text and HTML manipulation scenarios in the DOM.
 
 [Back to Top](#javascript-dom-manipulation)
 
